@@ -20,6 +20,7 @@
 # include <streambuf>
 # include <type_traits>
 
+#if 0
 // https://stackoverflow.com/a/8597498
 # define DECLARE_HAS_NESTED(Name, Member)                                          \
                                                                                    \
@@ -60,14 +61,24 @@ namespace Detail {
 DECLARE_KEY_TESTER(ImGuiKey_F);
 DECLARE_KEY_TESTER(ImGuiKey_D);
 
+} // namespace Detail
+} // namespace NodeEditor
+} // namespace ax
+
+#endif
+
+namespace ax {
+    namespace NodeEditor {
+        namespace Detail {
+
 static inline int GetKeyIndexForF()
 {
-    return KeyTester_ImGuiKey_F::Get<ImGuiKey_>(nullptr);
+    return ImGuiKey::ImGuiKey_F;
 }
 
 static inline int GetKeyIndexForD()
 {
-    return KeyTester_ImGuiKey_D::Get<ImGuiKey_>(nullptr);
+    return ImGuiKey::ImGuiKey_D;
 }
 
 } // namespace Detail
@@ -3314,7 +3325,7 @@ ed::EditorAction::AcceptResult ed::NavigateAction::Accept(const Control& control
 
     auto& io = ImGui::GetIO();
 
-    if (Editor->CanAcceptUserInput() && ImGui::IsKeyPressed(GetKeyIndexForF()) && Editor->AreShortcutsEnabled())
+    if (Editor->CanAcceptUserInput() && ImGui::IsKeyPressed((ImGuiKey)GetKeyIndexForF()) && Editor->AreShortcutsEnabled())
     {
         const auto zoomMode = io.KeyShift ? NavigateAction::ZoomMode::WithMargin : NavigateAction::ZoomMode::None;
 
@@ -4353,7 +4364,7 @@ ed::EditorAction::AcceptResult ed::ShortcutAction::Accept(const Control& control
         candidateAction = Copy;
     if (io.KeyCtrl && !io.KeyShift && !io.KeyAlt && ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_V)))
         candidateAction = Paste;
-    if (io.KeyCtrl && !io.KeyShift && !io.KeyAlt && ImGui::IsKeyPressed(GetKeyIndexForD()))
+    if (io.KeyCtrl && !io.KeyShift && !io.KeyAlt && ImGui::IsKeyPressed((ImGuiKey)GetKeyIndexForD()))
         candidateAction = Duplicate;
     if (!io.KeyCtrl && !io.KeyShift && !io.KeyAlt && ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Space)))
         candidateAction = CreateNode;
