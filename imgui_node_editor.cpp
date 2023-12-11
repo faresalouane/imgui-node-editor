@@ -93,9 +93,9 @@ static inline ImGuiKey GetKeyIndexForD()
 }
 # endif
 
-} // namespace Detail
-} // namespace NodeEditor
-} // namespace ax
+//} // namespace Detail
+//} // namespace NodeEditor
+//} // namespace ax
 
 
 //------------------------------------------------------------------------------
